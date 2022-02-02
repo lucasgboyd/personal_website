@@ -7,6 +7,6 @@ navbar:
   right:
     - text: "Home"
       href: website_postcard.html
-    - text: "About"
-      href: about.html
+    - text: "Blog"
+      href: blog.html
 output: distill::distill_article

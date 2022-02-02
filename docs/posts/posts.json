@@ -1,0 +1,36 @@
+[
+  {
+    "path": "posts/2022-02-01-welcome/",
+    "title": "My First Blog",
+    "description": "A perspicacious look at the times we all live in.",
+    "author": [
+      {
+        "name": "Lucas Boyd",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-01",
+    "categories": [],
+    "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-02-01T18:01:16-08:00",
+    "input_file": "welcome.knit.md"
+  },
+  {
+    "path": "posts/2022-02-01-second-post/",
+    "title": "second post",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Lucas Boyd",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-01",
+    "categories": [],
+    "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-02-01T18:06:51-08:00",
+    "input_file": "second-post.knit.md"
+  }
+]

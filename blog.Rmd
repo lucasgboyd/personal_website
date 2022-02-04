@@ -1,4 +1,6 @@
 ---
 title: "Blog"
-listing:  posts
+listing: 
+  posts:
+    -  2022-02-01-welcome
 ---

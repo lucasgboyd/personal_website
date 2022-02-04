@@ -1,7 +1,6 @@
 ---
 title: "Lucas Boyd"
 image: "lucas.jpeg"
-site: distill::distill_website
 links:
   - label: LinkedIn
     url: "https://linkedin.com/in/lucas-boyd-206007105/"
@@ -11,6 +10,7 @@ links:
     url: "mailto:lucasboyd@bren.ucsb.edu"
 output:
   postcards::trestles
+site: distill::distill_website
 ---
 
 ## Bio

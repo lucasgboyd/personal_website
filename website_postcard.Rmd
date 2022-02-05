@@ -8,32 +8,7 @@ links:
     url: "https://github.com/lucasgboyd"
   - label: Email
     url: "mailto:lucasboyd@bren.ucsb.edu"
-output:
-  postcards::trestles
 site: distill::distill_website
+output:
+  postcards::jolla
 ---
-
-## Bio
-
-With a strong background in international, experiential, and environmental education, I am passionate about contributing to technical, community-oriented decarbonization solutions. 
-
-## Education
-
-**University of California Santa Barbara** | Santa Barbara, CA
-
-Masters of Environmental Science and Management | September 2021 - June 2023
-Climate and Energy Specialization | Strategic Communication Focus
-
-**University of San Diego** | San Diego, CA
-
-B.S. in Behavioral Neuroscience | September 2012 - May 2016
-
-## Experience
-
-**UCSB Psychological and Brain Sciences** | Teaching Assistant | September 2021 - Present
-
-**The Road Less Traveled** | Training Director | June 2018 - June 2021
-
-**Exploring New Horizons** | Environmental Educator | December 2017 - June 2020
-
-**Carpe Diem Education** | Overseas Educator | August 2019 - December 2019

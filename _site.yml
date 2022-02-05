@@ -1,7 +1,7 @@
 name: "."
 title: "lb"
 description: |
-  Lucas Boyd
+  Lucas
 output_dir: "docs"
 navbar:
   right:

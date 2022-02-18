@@ -1,0 +1,152 @@
+---
+title: "Comparative Analysis"
+description: |
+  Hypothesis testing in comparing sugar maple growth. 
+author:
+  - name: Lucas Boyd
+    url: {}
+date: 2022-02-18
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# attach packages
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(kableExtra)
+library(ggbeeswarm)
+```
+
+
+```{r}
+# read in the maples data
+maples <- read_csv(here("data", "maples.csv")) %>% 
+  mutate(watershed = case_when( # changing observation names to be more descriptive
+    watershed == "Reference" ~ "No Treatment", 
+    watershed == "W1" ~ "Calcium-Treated"
+  ))
+```
+### Summary Statistics
+
+**Table 1** shows summary statistics for stem dry mass (g) and stem length (mm) of sugar maples across the two watersheds where samples were collected during each of the two years of the study. Sugar maples in one watershed were treated with calcium, while the other received no additional treatment. 
+
+```{r}
+# creating a finalized table with means and SD of stem dry mass and stem length
+
+# creating a summary statistics table
+maples_summary <- maples %>% 
+  group_by(watershed, year) %>% # grouping by watershed and year
+  summarize(mean_mass = mean(stem_dry_mass), # summary statistics for the given variables
+            sd_mass = sd(stem_dry_mass), 
+            mean_length = mean(stem_length),
+            sd_length = sd(stem_length), 
+            sample_size = n()
+            )
+
+# finalizing a table
+maples_table <- maples_summary %>% 
+  kable(digits = 3, col.names = c("Watershed", "Year", # finalizing column names
+                      "Mean Stem Dry Mass (g)", 
+                      "SD Stem Dry Mass (g)",
+                      "Mean Stem Length (mm)",
+                      "SD Stem Length (mm)", 
+                      "Sample Size")) %>% 
+  kable_material(full_width = FALSE) # adding a theme to the table
+
+maples_table # printing the table
+
+```
+
+```{r}
+# wrangling data to only include observations from 2003
+maples3 <- maples %>% 
+  filter(year == "2003")
+```
+
+### Stem Dry Mass Comparison
+
+```{r}
+# visualing stem dry mass across the two watersheds
+
+ggplot(data = maples3, aes(y= stem_dry_mass, x = watershed, color = watershed)) +
+  geom_beeswarm(size = 1.2) +
+   stat_summary(fun = mean, # adding summary statistics to plot
+               geom = "point",
+               shape = 20,
+               size = 4, 
+               fill = "black",
+               color = "black") +
+  geom_boxplot(fill = NA, width = 0.15, outlier.color = NA, show.legend = FALSE, color = "black") + # adding boxplot to plot
+  scale_color_manual(values = c("firebrick", "darkgreen")) + # changing colors
+  labs(x = "Watershed", y = "Stem Dry Mass (g)") + # changing labels
+  theme_minimal(base_size = 11) + # customizing the graph for appearance
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 13))
+  
+
+  
+
+```
+
+**Fig. 1 ** compares stem dry mass (g) of sugar maples between samples collected in 2003 from two watersheds: one that was treated with calcium and one that received no additional treatment. Boxplot endpoints indicate the 25^th^ and 75^th^ percentile values. The black line represents the median value for each species while the black point represents the mean value.
+
+```{r}
+# pulling vectors for use in analyses
+
+treated <- maples3 %>%
+  filter(watershed == "Calcium-Treated") %>% 
+  pull(stem_dry_mass)
+
+not_treated <- maples3 %>%
+  filter(watershed == "No Treatment") %>% 
+  pull(stem_dry_mass)
+
+```
+
+### Exploratory Plots
+
+```{r}
+
+hist(treated) # relatively normal, but with some definite positive skew
+hist(not_treated) # a little more normal, but negatively skewed
+qqnorm(treated) # some concerning outliers toward the top of the distribution
+qqnorm(not_treated) # also some concerning outliers
+
+
+```
+
+**Test Justification:** Based on these exploratory plots, I have decided to run a Mann-Whitney U rank-based test to compare the two samples. The histograms revealed significant skew, showing that the data is not normally distributed. Furthermore, the qq plots revealed concerning outliers that are shifting the mean. For these reasons, I believe that a Mann Whitney U test is the most appropriate, given that comparing ranks and medians rather than values and means adjusts for outliers and does not require normally distributed data. 
+
+### Statistical Analyses
+
+```{r}
+# running the man whitney u test to compare groups 
+mwu <- wilcox.test(treated, not_treated) %>% 
+  tidy() # storing a tidy table of the outputs of the MWU test
+
+# storing other values to call inline
+med_treated <- round(median(treated), 3)
+med_not_treated <- round(median(not_treated), 3)
+med_difference <- med_treated - med_not_treated
+med_percent_difference <- round(((med_treated - med_not_treated)/((med_not_treated + med_treated)/2))*100, 1)
+
+
+```
+
+Calcium-treated sugar maples have greater median stem dry mass (g) than non-treated sugar maples (`r med_treated`g and `r med_not_treated`g, respectively). Medians of calcium treated trees were `r med_difference`g (`r med_percent_difference`%) larger than non-treated trees on average. This difference was determined to be significant (Mann Whitney U test: *U* = `r round(mwu$statistic, 0)`, *p* = `r ifelse(mwu$p.value < 0.001, paste("< 0.001"), paste("=", mwu$p.value))`).
+
+**Conclusion:** Our analyses found a significant and large difference between sugar maple stem dry mass taken from a watershed treated with calcium and a watershed receiving no additional treatment. This leads us to reject the null and conclude that the ranks of stem dry mass in calcium-treated sugar maples and untreated sugar maples are not equal. 
+
+#### Data Citation
+
+Juice, S. and T. Fahey. 2019. Health and mycorrhizal colonization response of sugar maple (Acer saccharum) seedlings to calcium addition in Watershed 1 at the Hubbard Brook Experimental Forest ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/0ade53ede9a916a36962799b2407097e 
+
+
+
+

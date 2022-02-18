@@ -1,6 +1,9 @@
 ---
-title: "Blog"
+title: "Data Analysis and Visualization Projects"
 listing: 
   posts:
     -  2022-02-01-welcome
+    -  2022-02-18-binomial-logistic-regression
+    -  2022-02-18-lizardsnls
+    -  2022-02-18-sugarmaples
 ---

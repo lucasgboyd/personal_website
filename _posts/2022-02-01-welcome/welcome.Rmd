@@ -1,7 +1,7 @@
 ---
-title: "The Updraft"
+title: "Data Visualization"
 description: |
-  Hot takes on a warming planet.
+  Mono Lake water levels and management interventions.
 author:
   - name: Lucas Boyd
 date: 2022-01-17
@@ -11,5 +11,80 @@ output:
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+# attach packages
+library(tidyverse)
+library(janitor)
+library(here)
+library(scales)
 
+```
+
+```{r}
+# reading in the mono lake data
+mono <- read_csv(here("data", "mono_lake_annual_levels.csv")) %>% 
+# turning a row into column names
+  row_to_names(row_number = 5) 
+# creating another dataset with cleaner names to work with and selecting certain variables
+mono_clean <- mono %>% 
+  clean_names() %>% 
+# changing the class of variables from characters to numerics
+  mutate(level = as.numeric(lake_level_feet_above_sea_level)) %>% 
+  mutate(year = as.numeric(year)) %>% 
+  mutate(stable_level = as.numeric(stable_level)) %>% 
+  select(year, level, stable_level)
+
+# creating a subset to add geom points
+ mono_point <- mono_clean %>% 
+  filter(year %in% c(1850, 1941, 2017, 1978))
+  
+```
+
+```{r}
+ggplot(data = mono_clean, aes(x = year, y = level)) +
+  geom_hline(yintercept = 6392, # adding a line for the water management level
+             color = "cyan4", 
+             linetype = "dashed", size = 1) +
+  annotate("text", x = 1867, y = 6395, # adding a label
+            label = "Stability Goal", 
+            color = "cyan4") +
+  theme_classic(12) + 
+ scale_y_continuous(limits = c(6345,6430)) +
+  labs(y = "Water Level (feet above sea level)", x = "Year") +
+  geom_rect(aes(ymin=6360, ymax = 6377, xmin = -Inf, xmax = Inf, # adding shaded regions to show adverse affects of lowering water levels
+                fill = "Land Bridges Form")) +
+  geom_rect(aes(ymin=-Inf, ymax = 6350, xmin = -Inf, xmax = Inf, 
+                fill = "Acute Food Shortage")) +
+   geom_rect(aes(ymin=6350, ymax = 6360, xmin = -Inf, xmax = Inf, 
+                 fill = "Food Affected")) +
+  scale_fill_manual(values = c("firebrick1", "darkorange1", "gold"), name = element_blank()) + # manually changing colors
+    geom_line(size = 1.2) +
+  scale_x_continuous(limits = c(1850,2017), # changing number of ticks on x axis
+                     breaks = pretty(x = mono_clean$year, n = 10)) +
+    annotate("text", x = 1868, y = 6368, # adding labels for shaded areas
+              label = "Land Bridges Form") +
+  annotate("text", x = 1870, y = 6355, 
+            label = "Food Supply Affected") +
+  annotate("text", x = 1870, y = 6345, 
+            label = "Acute Food Shortage") +
+  theme(legend.position = "none") + # removing legend
+  geom_point(data = mono_point, aes(x = year, y = level), 
+             size = 3, shape = 21, color = "grey27", fill = "black") + # adding points of interest
+  annotate("text", x = 1971, y = 6421, 
+           label = "1941: Water Diverted to Los Angeles", 
+           color = "gray27") + #labeling those points
+    annotate("text", x = 2017, y = 6385, 
+             label = "2017", 
+             color = "gray27") +
+    annotate("text", x = 1850, y = 6410, 
+             label = "1850", 
+             color = "gray27") +
+  annotate("text", x = 1978, y = 6369, 
+           label = "1978: MLC Founded", 
+           color = "gray27")
+
+```
+
+**Fig. 1** shows the water level (in feet above sea level) for Mono Lake from 1850 until 2017 (indicated by the black line). In 1941, the Los Angeles Department of Water & Power began diverting water from Mono Lake's tributary streams to meet the water demands of the city. In 1978, the Mono Lake Committee was founded and set a goal to restore the lake to previous levels. The dashed line represents MLC's target of stabilizing the water level at 6392 feet. Critical levels for aquatic birds are indicated by the shaded regions. At a water level of 6377 feet, land bridges form and expose nesting sites to predators. At 6360 feet, high salinity decreases food availability for aquatic birds. At 6350 feet, the impacts of the food shortage become acute. 
 

@@ -8,6 +8,7 @@ author:
 date: 2022-02-18
 output:
   distill::distill_article:
+    code_folding: code
     self_contained: false
 ---
 
@@ -80,6 +81,7 @@ weight_function <- function(a, sv_length, b){
 ## Running NLS on all data
 
 **Table 1** displays the results of NLS analysis on all lizards species, indicating the coefficients produced by the model, standard error, and signficance level. 
+
 ```{r}
 # running the NLS
 lizards_nls <- nls(weight ~ weight_function(a, sv_length, b),
@@ -132,6 +134,7 @@ lizards_rmse <- rmse(lizards_nls, data = lizards)
 ## Running NLS on Male western whiptail lizards
 
 **Table 2** displays the results of NLS analysis on male western whiptail lizards, indicating the coefficients produced by the model, standard error, and significance level. 
+
 ```{r}
 # filtering for male whiptails
 whips <- lizards %>% 

@@ -113,7 +113,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Nonlinear Least Squares"]},{"type":"character","attributes":{},"value":["Parameter estimation with LTER lizard species data."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Nonlinear Least Squares"]},{"type":"character","attributes":{},"value":["Parameter estimation with LTER lizard species data."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["code"]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2420,6 +2420,10 @@ d-appendix d-footnote-list a.footnote-backlink {
 <p><strong>Data Citation:</strong> Lightfoot, D. and W.G. Whitford. 2020. Lizard pitfall trap data from 11 NPP study locations at the Jornada Basin LTER site, 1989-2006 ver 37. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f" class="uri">https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f</a></p>
 <h2 id="setup">Setup</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span>, warning <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># attach packages</span>
@@ -2432,8 +2436,13 @@ d-appendix d-footnote-list a.footnote-backlink {
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://modelr.tidyverse.org'>modelr</a></span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># reading in the data</span>
 <span class='va'>lizards</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>, <span class='st'>"lizard.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://purrr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -2447,12 +2456,17 @@ d-appendix d-footnote-list a.footnote-backlink {
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h2 id="finding-guess-coefficients-for-use-in-nls">Finding guess coefficients for use in NLS</h2>
 <p>The following equation was used as a starting point for the structure of the NLS model: <span class="math display">\[
 W = a(SVL)^b
 \]</span></p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># running a linear regression on log transformed data to find coefficients</span>
 <span class='va'>guess_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>log_weight</span> <span class='op'>~</span> <span class='va'>log_length</span>, data <span class='op'>=</span> <span class='va'>lizards</span><span class='op'>)</span>
@@ -2470,10 +2484,15 @@ W = a(SVL)^b
 <span class='op'>}</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h2 id="running-nls-on-all-data">Running NLS on all data</h2>
-<strong>Table 1</strong> displays the results of NLS analysis on all lizards species, indicating the coefficients produced by the model, standard error, and signficance level.
+<p><strong>Table 1</strong> displays the results of NLS analysis on all lizards species, indicating the coefficients produced by the model, standard error, and signficance level.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># running the NLS</span>
 <span class='va'>lizards_nls</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/nls.html'>nls</a></span><span class='op'>(</span><span class='va'>weight</span> <span class='op'>~</span> <span class='fu'>weight_function</span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>sv_length</span>, <span class='va'>b</span><span class='op'>)</span>,
@@ -2494,6 +2513,7 @@ W = a(SVL)^b
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_minimal</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2544,6 +2564,10 @@ a
 </table>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># predicting data based on our NLS model</span>
 <span class='va'>lizards_augment</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/augment.html'>augment</a></span><span class='op'>(</span><span class='va'>lizards_nls</span><span class='op'>)</span>
@@ -2565,17 +2589,27 @@ a
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span> x <span class='op'>=</span> <span class='st'>"SV Length (mm)"</span>, y <span class='op'>=</span> <span class='st'>"Weight (g)"</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <img src="lizardsnls_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># calculating RMSE</span>
 <span class='va'>lizards_rmse</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://modelr.tidyverse.org/reference/model-quality.html'>rmse</a></span><span class='op'>(</span><span class='va'>lizards_nls</span>, data <span class='op'>=</span> <span class='va'>lizards</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p><strong>Fig. 1</strong> compares SV length and weight for all lizard species, colored according to sex. The red line represents the NLS model trained on the data to predict weight as a function of SV length. RMSE for the NLS model was 2.791</p>
 <h2 id="running-nls-on-male-western-whiptail-lizards">Running NLS on Male western whiptail lizards</h2>
-<strong>Table 2</strong> displays the results of NLS analysis on male western whiptail lizards, indicating the coefficients produced by the model, standard error, and significance level.
+<p><strong>Table 2</strong> displays the results of NLS analysis on male western whiptail lizards, indicating the coefficients produced by the model, standard error, and significance level.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># filtering for male whiptails</span>
 <span class='va'>whips</span> <span class='op'>&lt;-</span> <span class='va'>lizards</span> <span class='op'><a href='https://purrr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -2606,6 +2640,7 @@ a
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_minimal</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2656,6 +2691,10 @@ a
 </table>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># predicting data based on model</span>
 <span class='va'>whips_augment</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/augment.html'>augment</a></span><span class='op'>(</span><span class='va'>whips_nls</span><span class='op'>)</span>
@@ -2688,13 +2727,19 @@ a
         legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.3</span>, <span class='fl'>0.72</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <img src="lizardsnls_files/figure-html5/unnamed-chunk-7-1.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># calculating RMSE</span>
 <span class='va'>whips_rmse</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://modelr.tidyverse.org/reference/model-quality.html'>rmse</a></span><span class='op'>(</span><span class='va'>whips_nls</span>, data <span class='op'>=</span> <span class='va'>whips</span><span class='op'>)</span> <span class='co'># running whiptail model on whiptail subset</span>
 <span class='va'>whips_rmse_general</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://modelr.tidyverse.org/reference/model-quality.html'>rmse</a></span><span class='op'>(</span><span class='va'>lizards_nls</span>, data <span class='op'>=</span> <span class='va'>whips</span><span class='op'>)</span> <span class='co'># running general model on whiptail subset</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p><strong>Fig. 2</strong> compares SV length and weight in male western whiptail lizards. The red line represents the NLS model trained on the entire lizard dataset including all species, while the blue line is the NLS model trained only on the subset of male western whiptail lizards. Both models predict weight as a function of SV length. The RMSE of the all species model was 3.562, while the RMSE of the whiptail specific model was 3.349. Thus the whiptail specific model is preferred when predicting weight from SV length of male western whiptail lizards, since the model’s lower RMSE shows that it is slightly more accurate and the model’s line appears to better fit the actual spread of data.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>

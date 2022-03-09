@@ -6,4 +6,5 @@ listing:
     -  2022-02-18-binomial-logistic-regression
     -  2022-02-18-lizardsnls
     -  2022-02-18-sugarmaples
+    -  2922-03-09-oilmaps
 ---

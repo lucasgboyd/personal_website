@@ -12,4 +12,4 @@ site: distill::distill_website
 output:
   postcards::jolla
 ---
-With a strong background in international, experiential, and environmental education, I am passionate about contributing to technical, community-oriented decarbonization solutions. 
+With a strong background in international, experiential, and environmental education, I am passionate about contributing to data-driven, community-oriented decarbonization solutions. 

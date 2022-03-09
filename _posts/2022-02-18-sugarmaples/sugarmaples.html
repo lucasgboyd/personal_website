@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Comparative Analysis"]},{"type":"character","attributes":{},"value":["Hypothesis testing in comparing sugar maple growth. \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Comparative Analysis"]},{"type":"character","attributes":{},"value":["Hypothesis testing in comparing sugar maple growth. \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["code"]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1485,6 +1485,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, warning <span class='op'>=</span> <span class='cn'>FALSE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># attach packages</span>
@@ -1496,8 +1500,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/eclarke/ggbeeswarm'>ggbeeswarm</a></span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># read in the maples data</span>
 <span class='va'>maples</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>, <span class='st'>"maples.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
@@ -1507,10 +1516,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h3 id="summary-statistics">Summary Statistics</h3>
 <p><strong>Table 1</strong> shows summary statistics for stem dry mass (g) and stem length (mm) of sugar maples across the two watersheds where samples were collected during each of the two years of the study. Sugar maples in one watershed were treated with calcium, while the other received no additional treatment.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># creating a finalized table with means and SD of stem dry mass and stem length</span>
 
@@ -1537,6 +1551,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class='va'>maples_table</span> <span class='co'># printing the table</span>
 </code></pre>
 </div>
+</details>
 <table class=" lightable-material" style="font-family: &quot;Source Sans Pro&quot;, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1660,15 +1675,24 @@ No Treatment
 </table>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># wrangling data to only include observations from 2003</span>
 <span class='va'>maples3</span> <span class='op'>&lt;-</span> <span class='va'>maples</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>==</span> <span class='st'>"2003"</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h3 id="stem-dry-mass-comparison">Stem Dry Mass Comparison</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># visualing stem dry mass across the two watersheds</span>
 
@@ -1688,10 +1712,15 @@ No Treatment
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <p><img src="sugarmaples_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
 <p><strong>Fig. 1 </strong> compares stem dry mass (g) of sugar maples between samples collected in 2003 from two watersheds: one that was treated with calcium and one that received no additional treatment. Boxplot endpoints indicate the 25<sup>th</sup> and 75<sup>th</sup> percentile values. The black line represents the median value for each species while the black point represents the mean value.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># pulling vectors for use in analyses</span>
 
@@ -1704,33 +1733,58 @@ No Treatment
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='va'>stem_dry_mass</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h3 id="exploratory-plots">Exploratory Plots</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>treated</span><span class='op'>)</span> <span class='co'># relatively normal, but with some definite positive skew</span>
 </code></pre>
 </div>
+</details>
 <img src="sugarmaples_files/figure-html5/unnamed-chunk-6-1.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>not_treated</span><span class='op'>)</span> <span class='co'># a little more normal, but negatively skewed</span>
 </code></pre>
 </div>
+</details>
 <img src="sugarmaples_files/figure-html5/unnamed-chunk-6-2.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/qqnorm.html'>qqnorm</a></span><span class='op'>(</span><span class='va'>treated</span><span class='op'>)</span> <span class='co'># some concerning outliers toward the top of the distribution</span>
 </code></pre>
 </div>
+</details>
 <img src="sugarmaples_files/figure-html5/unnamed-chunk-6-3.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/qqnorm.html'>qqnorm</a></span><span class='op'>(</span><span class='va'>not_treated</span><span class='op'>)</span> <span class='co'># also some concerning outliers</span>
 </code></pre>
 </div>
+</details>
 <p><img src="sugarmaples_files/figure-html5/unnamed-chunk-6-4.png" width="624" /></p>
 </div>
 <p><strong>Test Justification:</strong> Based on these exploratory plots, I have decided to run a Mann-Whitney U rank-based test to compare the two samples. The histograms revealed significant skew, showing that the data is not normally distributed. Furthermore, the qq plots revealed concerning outliers that are shifting the mean. For these reasons, I believe that a Mann Whitney U test is the most appropriate, given that comparing ranks and medians rather than values and means adjusts for outliers and does not require normally distributed data.</p>
 <h3 id="statistical-analyses">Statistical Analyses</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># running the man whitney u test to compare groups </span>
 <span class='va'>mwu</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span><span class='op'>(</span><span class='va'>treated</span>, <span class='va'>not_treated</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
@@ -1743,6 +1797,7 @@ No Treatment
 <span class='va'>med_percent_difference</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='op'>(</span><span class='op'>(</span><span class='va'>med_treated</span> <span class='op'>-</span> <span class='va'>med_not_treated</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='op'>(</span><span class='va'>med_not_treated</span> <span class='op'>+</span> <span class='va'>med_treated</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>100</span>, <span class='fl'>1</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p>Calcium-treated sugar maples have greater median stem dry mass (g) than non-treated sugar maples (0.032g and 0.022g, respectively). Medians of calcium treated trees were 0.01g (37%) larger than non-treated trees on average. This difference was determined to be significant (Mann Whitney U test: <em>U</em> = 1.1776^{4}, <em>p</em> = &lt; 0.001).</p>
 <p><strong>Conclusion:</strong> Our analyses found a significant and large difference between sugar maple stem dry mass taken from a watershed treated with calcium and a watershed receiving no additional treatment. This leads us to reject the null and conclude that the ranks of stem dry mass in calcium-treated sugar maples and untreated sugar maples are not equal.</p>

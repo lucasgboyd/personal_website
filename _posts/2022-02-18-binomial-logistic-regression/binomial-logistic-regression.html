@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Binomial Logistic Regression"]},{"type":"character","attributes":{},"value":["Palmetto species analysis and model fit. \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Binomial Logistic Regression"]},{"type":"character","attributes":{},"value":["Palmetto species analysis and model fit. \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["2022-02-18"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["code"]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1485,6 +1485,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span>, warning <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># attach packages</span>
@@ -1498,12 +1502,17 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/datalorax/equatiomatic'>equatiomatic</a></span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h3 id="overview">Overview</h3>
 <p>The following report examines growth data of two dominant palmetto species (<em>Serenoa repens</em> and <em>Sabal etonia</em>) in South Florida to produce a binomial logistic regression model that classifies plant species based on several physical features of the plant. First, differences between the species are visualized to determine which variables will be useful in classifying species. Then, the model is evaluated using 10-fold cross validation and AIC. Finally, the model is applied to the data to determine its efficacy in predicting plant species.</p>
 <p><strong>Data Citation:</strong> Data source: Abrahamson, W.G. 2019. Survival, growth and biomass estimates of two dominant palmetto species of south-central Florida from 1981 - 2017, ongoing at 5-year intervals ver 1. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/f2f96ec76fbbd4b9db431c79a770c4d5" class="uri">https://doi.org/10.6073/pasta/f2f96ec76fbbd4b9db431c79a770c4d5</a></p>
 <h3 id="reading-in-and-cleaning-up-the-data">Reading in and cleaning up the data</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>palmetto</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>, <span class='st'>"palmetto.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>height</span>, <span class='va'>length</span>, <span class='va'>width</span>, <span class='va'>green_lvs</span>, <span class='va'>species</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='co'># selecting for variables</span>
@@ -1516,6 +1525,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>species_name <span class='op'>=</span> <span class='fu'><a href='https://forcats.tidyverse.org/reference/as_factor.html'>as_factor</a></span><span class='op'>(</span><span class='va'>species_name</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># changing species name to a factor for use in blr</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p><strong>Variables of interest:</strong> - Number of green leaves - green_lvs</p>
 <ul>
@@ -1525,6 +1535,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul>
 <h3 id="visualizing-differences-between-species">Visualizing differences between species</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># ggplots to visualize the differences in each variable between species</span>
 <span class='co'># effectplot could also be useful in these visualizations for blr </span>
@@ -1593,17 +1607,28 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='st'>"Canopy Length (cm)"</span><span class='op'>)</span> 
 </code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='op'>(</span><span class='va'>p1</span> <span class='op'>|</span> <span class='va'>p2</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <img src="binomial-logistic-regression_files/figure-html5/unnamed-chunk-3-1.png" width="624" />
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='op'>(</span><span class='va'>p3</span> <span class='op'>|</span> <span class='va'>p4</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <p><img src="binomial-logistic-regression_files/figure-html5/unnamed-chunk-3-2.png" width="624" /></p>
 </div>
 <p><strong>Fig. 1</strong> compares two palmetto species to determine feasibility of each of four variables in predicting whether a plant is <em>Serenoa repens</em> (green) or <em>Sabal etonia</em> (orange). Variables examined in the figure are: number of green leaves on the plant (top left), height of plant (cm) (top right), canopy width (cm) (bottom left) and canopy length (cm) (bottom right). Width of the shape in each figure represents the quantity of observations at that particular value. Box endpoints indicate the 25<sup>th</sup> and 75<sup>th</sup> percentile values; the black line and black point within the box indicate the median and mean value for each species, respectively.</p>
@@ -1615,6 +1640,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p><strong>Model 2:</strong> Plant species as a function of plant height, number of green leaves, and canopy width</p></li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># storing functions of combinations of variables for use in regression</span>
 <span class='va'>f1</span> <span class='op'>&lt;-</span> <span class='va'>species_name</span> <span class='op'>~</span> <span class='va'>height</span> <span class='op'>+</span> <span class='va'>length</span> <span class='op'>+</span> <span class='va'>width</span> <span class='op'>+</span> <span class='va'>green_lvs</span>
@@ -1633,22 +1662,32 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class='co'># reference (0) = Sabal etonia</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h3 id="model-selection">Model Selection</h3>
 <h4 id="aic">AIC</h4>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>aic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/AICcmodavg/man/aictab.html'>aictab</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>blr1</span>, <span class='va'>blr2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># model1 = 5194</span>
 <span class='co'># model2 = 5987</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p><strong>Model 1:</strong> 5194.6</p>
 <p><strong>Model 2:</strong> 5987.5</p>
 <p>The difference in AICc is very large (792.9), thus model 1 has significantly better fit than model 2.</p>
 <h4 id="fold-cross-validation">10-fold cross validation</h4>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>24</span><span class='op'>)</span> <span class='co'># setting seed for reproducibility</span>
 
@@ -1669,11 +1708,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class='co'># accuracy = 0.899</span>
 </code></pre>
 </div>
+</details>
 </div>
 <p><strong>Model assessment results:</strong> Model 1, which classifies palmetto species as a function of plant height, canopy width, canopy length and number of green leaves, performed better during 10-fold cross validation (accuracy = 91.7%, AICc = 5194.6) than model 2 (accuracy = 89.9%, AICc = 5987.5). Thus, based on the prediction accuracy results and AIC values, model 1 is preferred.</p>
 <h3 id="regression-results">Regression results</h3>
 <p><strong>Table 1</strong> shows the results of binomial logistic regression for model 1. Coefficients show the change in log odds of the resulting species being <em>Sabal etonia</em> (reference) as opposed to <em>Serenoa repens</em>.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># storing the results of regression as a data frame</span>
 <span class='va'>blr1_tidy</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>blr1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>  
@@ -1695,6 +1739,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_minimal</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1795,6 +1840,10 @@ Width
 <h3 id="model-success-rate">Model success rate</h3>
 <p><strong>Table 1</strong> shows the success rate of the chosen model in classifying each plant species when trained on and applied to the whole data set.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># storing a function for prediction accuracy</span>
 <span class='va'>prediction_accuracy</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span>
@@ -1826,6 +1875,7 @@ Width
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_minimal</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>

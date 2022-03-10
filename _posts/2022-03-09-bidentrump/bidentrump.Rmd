@@ -38,7 +38,7 @@ trump <- pdf_text(here("data", "trump.pdf")) # Trump State of of the Union 2020
 
 ## Text Analysis
 
-![Joe Biden and Donald Trump giving State of the Union Adresses in 2022 and 2020. Credit: *Politico*](biden_trump.jpg){width="90%"}
+![Joe Biden and Donald Trump giving State of the Union Addresses in 2022 and 2020. Credit: *Politico*](biden_trump.jpg){width="90%"}
 
 ```{r}
 ### DATA WRANGLING
@@ -212,7 +212,7 @@ trump_bar <- ggplot(data = top_20_climate_trump, aes(x = reorder(word, n), y = n
   biden_bar | trump_bar # placing plots next to eachother in outout html
 ```
 
-**Fig. 1** displays the results of text analysis from the 2022 and 2020 State of the Union address transcripts. Biden's 2022 adress is on the left side of the panel while Trump's 2020 address is on the right. The top panel visualizes the top 50 most used words in each speech with the size of word corresponding to frequency. The bottom panel examines counts of the top 20 most frequently used words in each address. Words that were determined to be of no interest to the comparison (stop words) were excluded from the analysis and visualization.
+**Fig. 1** displays the results of text analysis from the 2022 and 2020 State of the Union address transcripts. Biden's 2022 address is on the left side of the panel while Trump's 2020 address is on the right. The top panel visualizes the top 50 most used words in each speech with the size of word corresponding to frequency. The bottom panel examines counts of the top 20 most frequently used words in each address. Words that were determined to be of no interest to the comparison (stop words) were excluded from the analysis and visualization.
 
 \*Note: "climate" was not one of the top 20 most frequently used words in either speech, but is included here for comparison.
 

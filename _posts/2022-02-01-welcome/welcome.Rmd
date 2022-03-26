@@ -7,20 +7,20 @@ author:
 date: 2022-01-17
 output:
   distill::distill_article:
+    code_folding: code
     self_contained: false
 ---
 
-
-```{r setup, include=FALSE}
+### Setup 
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 # attach packages
 library(tidyverse)
 library(janitor)
 library(here)
 library(scales)
-
 ```
-
+### Data wrangling
 ```{r}
 # reading in the mono lake data
 mono <- read_csv(here("data", "mono_lake_annual_levels.csv")) %>% 
@@ -40,7 +40,7 @@ mono_clean <- mono %>%
   filter(year %in% c(1850, 1941, 2017, 1978))
   
 ```
-
+### Visualization
 ```{r}
 ggplot(data = mono_clean, aes(x = year, y = level)) +
   geom_hline(yintercept = 6392, # adding a line for the water management level

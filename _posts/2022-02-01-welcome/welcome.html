@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Data Visualization"]},{"type":"character","attributes":{},"value":["Mono Lake water levels and management interventions.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]}]}]},{"type":"character","attributes":{},"value":["2022-01-17"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Data Visualization"]},{"type":"character","attributes":{},"value":["Mono Lake water levels and management interventions.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lucas Boyd"]}]}]},{"type":"character","attributes":{},"value":["2022-01-17"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["code"]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1482,10 +1482,101 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<h3 id="setup">Setup</h3>
 <div class="layout-chunk" data-layout="l-body">
-
+<details>
+<summary>
+code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>FALSE</span>, warning <span class='op'>=</span> <span class='cn'>FALSE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='co'># attach packages</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/sfirke/janitor'>janitor</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://scales.r-lib.org'>scales</a></span><span class='op'>)</span>
+</code></pre>
 </div>
+</details>
+</div>
+<h3 id="data-wrangling">Data wrangling</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># reading in the mono lake data</span>
+<span class='va'>mono</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>, <span class='st'>"mono_lake_annual_levels.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+<span class='co'># turning a row into column names</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/row_to_names.html'>row_to_names</a></span><span class='op'>(</span>row_number <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> 
+<span class='co'># creating another dataset with cleaner names to work with and selecting certain variables</span>
+<span class='va'>mono_clean</span> <span class='op'>&lt;-</span> <span class='va'>mono</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+<span class='co'># changing the class of variables from characters to numerics</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>level <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>lake_level_feet_above_sea_level</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>stable_level <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>stable_level</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>year</span>, <span class='va'>level</span>, <span class='va'>stable_level</span><span class='op'>)</span>
+
+<span class='co'># creating a subset to add geom points</span>
+ <span class='va'>mono_point</span> <span class='op'>&lt;-</span> <span class='va'>mono_clean</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1850</span>, <span class='fl'>1941</span>, <span class='fl'>2017</span>, <span class='fl'>1978</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<h3 id="visualization">Visualization</h3>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mono_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>level</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_hline</a></span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>6392</span>, <span class='co'># adding a line for the water management level</span>
+             color <span class='op'>=</span> <span class='st'>"cyan4"</span>, 
+             linetype <span class='op'>=</span> <span class='st'>"dashed"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1867</span>, y <span class='op'>=</span> <span class='fl'>6395</span>, <span class='co'># adding a label</span>
+            label <span class='op'>=</span> <span class='st'>"Stability Goal"</span>, 
+            color <span class='op'>=</span> <span class='st'>"cyan4"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span> <span class='op'>+</span> 
+ <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6345</span>,<span class='fl'>6430</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>"Water Level (feet above sea level)"</span>, x <span class='op'>=</span> <span class='st'>"Year"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_rect</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>ymin<span class='op'>=</span><span class='fl'>6360</span>, ymax <span class='op'>=</span> <span class='fl'>6377</span>, xmin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, xmax <span class='op'>=</span> <span class='cn'>Inf</span>, <span class='co'># adding shaded regions to show adverse affects of lowering water levels</span>
+                fill <span class='op'>=</span> <span class='st'>"Land Bridges Form"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_rect</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>ymin<span class='op'>=</span><span class='op'>-</span><span class='cn'>Inf</span>, ymax <span class='op'>=</span> <span class='fl'>6350</span>, xmin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, xmax <span class='op'>=</span> <span class='cn'>Inf</span>, 
+                fill <span class='op'>=</span> <span class='st'>"Acute Food Shortage"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_tile.html'>geom_rect</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>ymin<span class='op'>=</span><span class='fl'>6350</span>, ymax <span class='op'>=</span> <span class='fl'>6360</span>, xmin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, xmax <span class='op'>=</span> <span class='cn'>Inf</span>, 
+                 fill <span class='op'>=</span> <span class='st'>"Food Affected"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"firebrick1"</span>, <span class='st'>"darkorange1"</span>, <span class='st'>"gold"</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='co'># manually changing colors</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1850</span>,<span class='fl'>2017</span><span class='op'>)</span>, <span class='co'># changing number of ticks on x axis</span>
+                     breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/pretty.html'>pretty</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>mono_clean</span><span class='op'>$</span><span class='va'>year</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1868</span>, y <span class='op'>=</span> <span class='fl'>6368</span>, <span class='co'># adding labels for shaded areas</span>
+              label <span class='op'>=</span> <span class='st'>"Land Bridges Form"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1870</span>, y <span class='op'>=</span> <span class='fl'>6355</span>, 
+            label <span class='op'>=</span> <span class='st'>"Food Supply Affected"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1870</span>, y <span class='op'>=</span> <span class='fl'>6345</span>, 
+            label <span class='op'>=</span> <span class='st'>"Acute Food Shortage"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span> <span class='op'>+</span> <span class='co'># removing legend</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mono_point</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>level</span><span class='op'>)</span>, 
+             size <span class='op'>=</span> <span class='fl'>3</span>, shape <span class='op'>=</span> <span class='fl'>21</span>, color <span class='op'>=</span> <span class='st'>"grey27"</span>, fill <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span> <span class='op'>+</span> <span class='co'># adding points of interest</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1971</span>, y <span class='op'>=</span> <span class='fl'>6421</span>, 
+           label <span class='op'>=</span> <span class='st'>"1941: Water Diverted to Los Angeles"</span>, 
+           color <span class='op'>=</span> <span class='st'>"gray27"</span><span class='op'>)</span> <span class='op'>+</span> <span class='co'>#labeling those points</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>2017</span>, y <span class='op'>=</span> <span class='fl'>6385</span>, 
+             label <span class='op'>=</span> <span class='st'>"2017"</span>, 
+             color <span class='op'>=</span> <span class='st'>"gray27"</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1850</span>, y <span class='op'>=</span> <span class='fl'>6410</span>, 
+             label <span class='op'>=</span> <span class='st'>"1850"</span>, 
+             color <span class='op'>=</span> <span class='st'>"gray27"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span><span class='st'>"text"</span>, x <span class='op'>=</span> <span class='fl'>1978</span>, y <span class='op'>=</span> <span class='fl'>6369</span>, 
+           label <span class='op'>=</span> <span class='st'>"1978: MLC Founded"</span>, 
+           color <span class='op'>=</span> <span class='st'>"gray27"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
 <p><img src="welcome_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
 <p><strong>Fig. 1</strong> shows the water level (in feet above sea level) for Mono Lake from 1850 until 2017 (indicated by the black line). In 1941, the Los Angeles Department of Water &amp; Power began diverting water from Mono Lake’s tributary streams to meet the water demands of the city. In 1978, the Mono Lake Committee was founded and set a goal to restore the lake to previous levels. The dashed line represents MLC’s target of stabilizing the water level at 6392 feet. Critical levels for aquatic birds are indicated by the shaded regions. At a water level of 6377 feet, land bridges form and expose nesting sites to predators. At 6360 feet, high salinity decreases food availability for aquatic birds. At 6350 feet, the impacts of the food shortage become acute.</p>

@@ -1,5 +1,5 @@
 ---
-title: "Data Visualization"
+title: "Water Management: Data Visualization"
 description: |
   Mono Lake water levels and management interventions.
 author:

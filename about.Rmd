@@ -15,6 +15,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Lucas Boyd graduated from the University of San Diego in 2016 with a B.A. in Behavioral Neuroscience. After completing his degree, he spent five years working in experiential and environmental education. His teaching adventures have taken him all over the world, leading students on a variety of environmental projects from rainwater collection in the Thai highlands to invasive lionfish eradication in Belize and many projects in between. After several years in education, Lucas now feels ready to broaden his lens and examine environmental issues and solutions from new perspectives. In particular, he is interested in data-driven decarbonization solutions, drawing on his neuroscience background and teaching experience to study how to best communicate scientific information and inspire meaningful action. In his free time, you can find Lucas on a mountain peak, a beach, or anywhere else that gets him outside. He is excited to continue to learn and grow as a professional and environmentalist here at Bren, where he is specializing in Energy and Climate with a focus on Strategic Environmental Communication.
 
+<a href = "writing_sample_geo.pdf" target = "_blank">CLICK HERE FOR A WRITING SAMPLE</a>
+
+
 
 ## Education
 
